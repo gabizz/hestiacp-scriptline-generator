@@ -1,0 +1,161 @@
+<html>
+
+	<head>
+		<style>
+			body {
+				font-family: "Arial";
+			}
+
+			.main {
+				background: lightcoral
+			}
+
+			.styled {
+				color: navy;
+				font-size: 0.8rem;
+			}
+
+			.text-input {
+				background: 'red'
+			}
+
+			h5 {
+				color: navy;
+				padding: none;
+				margin: none;
+				font-weight: 1000
+			}
+
+			.output {
+				background: lightcyan;
+				width: 97%;
+				margin: 10px;
+				box-shadow: 2px 2px 10px grey;
+				font-size: 0.7rem;
+				padding: 10px;
+			}
+		</style>
+		<script type="text/javascript">
+			var onLoad = function () {
+				var options = [
+					{ name: "--nginx", id: "nginx", param: "-n", desc: "Install Nginx [yes|no]", selected: true },
+					{ name: "--phpfpm", id: "phpfpm", param: "-w", desc: "Install PHP-FPM [yes|no]", selected: false },
+					{ name: "--multiphp", id: "--multiphp", param: "-o", desc: "(not recommended for production)", selected: false },
+					{ name: "--vsftpd", id: "--vsftpd", param: "-v", desc: "Install Vsftpd [yes|no]", selected: true },
+					{ name: "--proftpd", id: "proftpd", param: "-j", desc: "Install ProFTPD [yes|no]", selected: false },
+					{ name: "--named", id: "named", param: "-k", desc: "Install Bind [yes|no]", selected: true },
+					{ name: "--mysql", id: "mysql", param: "-m", desc: "Install MariaDB [yes|no]", selected: true },
+					{ name: "--postgresql", id: "--postgresql", param: "-g", desc: "Install PostgreSQL [yes|no]", selected: false },
+					{ name: "--exim", id: "--exim", param: "-x", desc: "Install Exim [yes|no]", selected: true },
+					{ name: "--dovecot", id: "dovecot", param: "-z", desc: "Install Dovecot [yes|no]", selected: true },
+					{ name: "--clamav", id: "clamav", param: "-c", desc: "Install ClamAV [yes|no]", selected: true },
+					{ name: "--spamassassin", id: "spamassassin", param: "-t", desc: "Install SpamAssassin [yes|no]", selected: true },
+					{ name: "--iptables", id: "iptables", param: "-i", desc: "Install Iptables [yes|no]", selected: true },
+					{ name: "--fail2ban", id: "fail2ban", param: "-b", desc: "Install Fail2ban [yes|no]", selected: true },
+					{ name: "--quota", id: "quota", param: "-q", desc: "Filesystem Quota [yes|no]", selected: false },
+					{ name: "--api", id: "api", param: "-d", desc: "Activate API [yes|no]", selected: true },
+					{ name: "--interactive", id: "interactive", param: "-y", desc: "Interactive install [yes|no]", selected: true },
+					{ name: "--force", id: "force", param: "-f", desc: "Force installation [yes|no]", selected: false },
+					{ name: "--port", id: "port", param: "-r", desc: "Change Backend Port", selected: true, text: '8083' },
+					{ name: "--hostname", id: "hostname", param: "-s", desc: "Set hostname [text]", selected: false, text: ' ' },
+					{ name: "--email", id: "email", param: "-e", desc: "Set admin email [text]", selected: false, text: ' ' },
+					{ name: "--password", id: "password", param: "-p", desc: "Set admin password [text]", selected: false, text: ' ' },
+					{ name: "--lang", id: "language", param: "-l", desc: "Default language default: [en]", selected: false, text: 'en' },
+				]
+
+
+				change = function (ev) {
+
+					var filter = options.filter(function (elem) {
+						return elem.id === ev.id
+					})
+					console.log("filter:", filter)
+					filter[0].selected = ev.checked
+					createScript()
+				}
+
+				changeText = function (ev) {
+					
+					var currentEl = options.filter( function(item) { return item.id == ev.id })
+					currentEl[0].text = ev.value
+					createScript()
+
+				}
+				
+				options.map(function (elem, index) {
+					let content = document.getElementById('content')
+					content.className = "styled"
+					if (!elem.text) {
+						// write checkbox options to dom
+						content.insertAdjacentHTML('beforeend', `
+							<input type="checkbox"
+					 			value =  ${elem.selected} 
+						 		${elem.selected ? 'checked' : ''}
+					 	 		id = ${elem.id} 
+								onchange = "change(this)"> 
+									<strong>${elem.param} ${elem.name}</strong> <i>${elem.desc}</i>
+							</input><br/>`
+						)
+					} else {
+						content.insertAdjacentHTML('beforeend', `
+							<label for "${elem.id}-label">
+								${elem.id}
+							</label>
+							<input type = "text" id = "${elem.id}" value = "${elem.text}" onkeyup = "changeText(this)">
+							
+						`)
+					}
+
+				})
+				clipboardCopy = function() {
+					//Before we copy, we are going to select the text.
+					var text = document.getElementById('scriptline');
+					var selection = window.getSelection();
+					var range = document.createRange();
+					range.selectNodeContents(text);
+					selection.removeAllRanges();
+					selection.addRange(range);
+					//add to clipboard.
+					document.execCommand('copy');
+					alert("script line has been copied to clipboard")
+				}
+
+				createScript = function () {
+					var output = document.getElementById('output')
+					var boolOpts = '', textOpts = ''
+					options.map(function (elem) {
+						boolOpts += !elem.text ? elem.param + ' ' + (elem.selected ? 'yes':'no') + " ": ''
+						textOpts +=  elem.text && elem.text.length > 1  ?  elem.param + ' ' + elem.text + ' ': ''
+					})
+					output.innerHTML =
+						`Log in to your server as root, either directly or via SSH:
+<h3><strong><i>ssh root@your.server</i></strong></h3>
+Download the installation script:
+<h3><strong><i>wget https://raw.githubusercontent.com/hestiacp/hestiacp/master/install/hst-install.sh</i></strong></h3>
+Run the following command (based on the options you have chosen above):
+<h3 onclick = "clipboardCopy()" style = " border:0px; background: navy; color: white; box-shadow: 3px 3px 4px black;padding: 10px"> 
+<a id = "scriptline">sudo bash hst-install.sh ${boolOpts} ${textOpts}</a>
+</h3>
+`;
+				}
+
+
+				createScript()
+			}
+
+		</script>
+	</head>
+
+	<body onload="onLoad()">
+		<h5>Prepare your HestiaCP installation script, containing the following features:</h5>
+		<div id="content" class="main"></div>
+
+		<hr />
+		<!-- <input type = "submit" value = "CREATE SCRIPT" onclick="createScript()"> </input>
+		<hr /> -->
+		<div id="output" class = "output" />
+	</body>
+
+
+
+</html>
