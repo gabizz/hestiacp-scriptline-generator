@@ -7,3 +7,10 @@ HestiaCP is a fork of VestaCP, a bold and smart open smart initiative to offer a
  Feel free to use it, improve it or integrate it
 
  G
+ 
+ ===Changes===
+ 
+ 5/5/2020
+ 
+ * Changed default value phpfpm to yes 
+ * Used full string instead the short one. (https://forum.hestiacp.com/t/restored-from-vesta-installed-with-multi-php-but-no-php-option/789/3)
