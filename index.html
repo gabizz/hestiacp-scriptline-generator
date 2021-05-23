@@ -1,229 +1,202 @@
+<!DOCTYPE html>
 <html>
 
-	<head>
-		<style>
-			body {
-				font-family: "Arial";
-			}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0">
+</head>
 
-			.main {
-				display: flex; 
-				flex-direction: row;
-				justify-content: flex-start;
-				align-items: center;
-				padding:2px;
-				/* box-shadow: 2px 2px 10px lightslategrey; */
-			}
+<body>
+  <div id="root"></div>
 
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/@material-ui/core@4.11.0/umd/material-ui.production.min.js"></script>
+  <script src="./options.js"></script>
 
+  <script type="text/babel">
+    const HST_RELEASE_LINK = "https://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install.sh"
+    const createScript = opts => {
+      var boolOpts = '', textOpts = ''
+      opts.map(function (elem) {
+        boolOpts += !elem.text ? elem.param + ' ' + (elem.selected ? 'yes' : 'no') + " " : ''
+        textOpts += elem.text && elem.text.length > 1 ? elem.param + ' ' + elem.text + ' ' : ''
+      })
+      return `sudo bash hst-install.sh ${boolOpts} ${textOpts}`
+    }
 
-			.text-input {
-				background: 'red'
-			}
+    const App = props => {
 
-			.title {
-				color: navy;
-				padding-bottom: 10px;
-				margin: none;
-				font-weight: 600
-			}
+      const { useState, useEffect, Fragment, useRef } = React
+      const { Container, Toolbar, Grid, makeStyles, ListItem, ListItemText, ListItemSecondaryAction,
+        Typography, Divider, TextField,
+        Dialog, DialogTitle, DialogActions, DialogContent, Snackbar,
+        Button, Checkbox, FormControlLabel } = window['MaterialUI'];
+      const useStyles = makeStyles(theme => ({
+        root: { flexGrow: 1 },
+        toolbar: {
+          background: theme.palette.primary.dark,
+          color: theme.palette.primary.contrastText
+        },
+        container: {
+          background: "white",
+          height: "88vh", overflow: "auto",
+        },
+        listItem: {
+          paddingTop: 0, paddingBottom: 0
+        }
+      }))
 
-			.output {
-				background: #2196f31a;
-				width: 97%;
-				margin: 10px;
-				box-shadow: 2px 2px 10px grey;
-				font-size: 0.7rem;
-				padding: 10px;
-			}
-			.ckb {
-				transform: scale(2);
-				margin: 5px
-			}
-			.flex-box {
-				display: flex;
-				flex-direction: row;
-				/* grid-auto-flow:row; */
-				justify-content: flex-start;
-				align-items: center;
-				/* background: #fafafa; */
-				border-bottom: 1px dotted rgb(170, 160, 241)
-				
-			}
-			#content-left, #content-right{
-				padding: 10px;margin: 10px;
-				box-shadow: 1px 1px 4px grey;
-				height:65vh
-			}
+      const classes = useStyles()
+      const [data, setData] = useState()
+      const [dialog, setDialog] = useState()
+      const [confirmCopy, setConfirmCopy] = useState()
+      const copyRef1 = useRef(), copyRef2=useRef()
 
-			.bash-line {
-				font-family: 'Courier New', Courier, monospace;
-				font-size: 1.1em; font-weight: 600;
-				border:1px dashed grey; background:#fff; color: navy; box-shadow: 3px 3px 4px lightblue;padding: 10px; margin: 10px;
-				border-radius: 5px;
-			}
+      useEffect(() => {
+        setData(options)
+      }, [])
 
-		</style>
-		<script type="text/javascript">
-			var onLoad = function () {
-				var options = [
-					{ name: " (--apache)", id: "apache", param: "--apache", desc: " Install Apache [yes|no] default: yes", selected: true },
-					{ name: " (--nginx)", id: "nginx", param: "--nginx", desc: "Install Nginx [yes|no] default: yes", selected: true },
-					{ name: " (--phpfpm)", id: "phpfpm", param: "--phpfpm", desc: "Install PHP-FPM [yes|no] default: yes", selected: true },
-					{ name: " (--multiphp)", id: "multiphp", param: "--multiphp", desc: " Install Multi-PHP [yes|no] default: no", selected: false },
-					{ name: " (--vsftpd)", id: "vsftpd", param: "--vsftpd", desc: "Install Vsftpd [yes|no] default: yes", selected: true },
-					{ name: " (--proftpd)", id: "proftpd", param: "--proftpd", desc: "Install ProFTPD [yes|no] default: no", selected: false },
-					{ name: " (--named)", id: "named", param: "--named", desc: "Install Bind [yes|no] default: yes", selected: true },
-					{ name: " (--mysql)", id: "mysql", param: "--mysql", desc: "Install MariaDB [yes|no] default: yes", selected: true },
-					{ name: " (--postgresql)", id: "--postgresql", param: "--postgresql", desc: "Install PostgreSQL [yes|no] default: no", selected: false },
-					{ name: " (--exim)", id: "--exim", param: "--exim", desc: "Install Exim [yes|no] default: yes", selected: true },
-					{ name: " (--dovecot)", id: "dovecot", param: "--dovecot", desc: "Install Dovecot [yes|no] default: yes", selected: true },
-					{ name: " (--clamav)", id: "clamav", param: "--clamav", desc: "Install ClamAV [yes|no] default: yes", selected: true },
-					{ name: " (--spamassassin)", id: "spamassassin", param: "--spamassassin", desc: "Install SpamAssassin [yes|no] default: yes", selected: true },
-					{ name: " (--iptables)", id: "iptables", param: "--iptables", desc: "Install Iptables [yes|no] default: yes", selected: true },
-					{ name: " (--fail2ban)", id: "fail2ban", param: "--fail2ban", desc: "Install Fail2ban [yes|no] default: yes", selected: true },
-					{ name: " (--quota)", id: "quota", param: "--quota", desc: "Filesystem Quota [yes|no] default: no", selected: false },
-					{ name: " (--api)", id: "api", param: "--api", desc: "Activate API [yes|no] default: yes", selected: true },
-					{ name: " (--force)", id: "force", param: "--force", desc: "Force installation [yes|no] default: no", selected: false },
-					{ name: " (--interactive)", id: "interactive", param: "--interactive", desc: "Interactive install [yes|no] default: yes", selected: true },
-					{ name: " (--port)", id: "port", param: "--port", desc: "Change Backend Port default: 8083", selected: true, text: '8083' },
-					{ name: " (--hostname)", id: "hostname", param: "--hostname", desc: "Set hostname [text]", selected: false, text: ' ' },
-					{ name: " (--email)", id: "email", param: "--email", desc: "Set admin email [text]", selected: false, text: ' ' },
-					{ name: " (--password)", id: "password", param: "--password", desc: "Set admin password [text]", selected: false, text: ' ' },
-					{ name: " (--lang)", id: "language", param: "--lang", desc: "Default language default: en", selected: false, text: 'en' },
-					{ name: "--with-debs", id: "debs", param: "--with-debs", desc: "Path to Hestia debs", selected: false, text: ' ' },
-				]
+      const toggleHandler = i => () => {
+        let nd = [...data]
+        nd[i]['selected'] = !nd[i]['selected']
+        setData(nd)
+      }
+      const inputHandler = index => ev => {
+        let nd = [...data]
+        nd[index]['text'] = ev.target.value
+        ev.target.value.length > 0 ? nd[index]['selected'] = true : nd[index]['selected'] = false;
+        if (ev.target.value.length === 0)  nd[index]['text'] =" "
+        setData(nd)
+      }
+      const clipboardHandler1 = ev => {
+        copyRef1.current.select()
+        document.execCommand('copy');
+        ev.target.focus();
+        setConfirmCopy(true)
+      }
+      const clipboardHandler2 = ev => {
+        copyRef2.current.select()
+        document.execCommand('copy');
+        ev.target.focus();
+        setConfirmCopy(true)
+      }
 
+      return (
+        <div className={classes.root}>
+          <Toolbar variant="dense" className={classes.toolbar}><br />
+            <Grid container justify="space-between" alignItems="center">
+              <Typography variant="h5" color="inherit" >HESTIA INSTALLER</Typography>
+              <Button size="xs" color="inherit" variant="outlined" onClick={() => setDialog(true)}>
+                proceed
+                </Button>
+            </Grid>
+          </Toolbar>
+          <Container maxWidth="md">
+            <Typography variant="overline">
+              Prepare your HestiaCP installation script, including the following features:
+              </Typography>
+              <div align ="right" style = {{marginBottom: "4px"}}>
+                  <a href = "https://gabizz.github.io/hestiacp-scriptline-generator/index.old.html">
+                    <small>the old script here</small>
+                    </a>
+              </div>
+            <Grid container justify="space-between" alignItems="flex-start" spacing={1} className={classes.container}>
+              <Grid item xs={12}>
 
-				change = function (ev) {
-
-					var filter = options.filter(function (elem) {
-						return elem.id === ev.id
-					})
-					console.log("filter:", filter)
-					filter[0].selected = ev.checked;
-					createScript()
-				}
-
-				changeText = function (ev) {
-					
-					var currentEl = options.filter( function(item) { return item.id == ev.id })
-					currentEl[0].text = ev.value
-					createScript()
-
-				}
-				let contentLeft = document.getElementById('content-left')
-				let contentRight = document.getElementById('content-right')
-
-				//boolean options
-				options.map(function (elem, index) {
-					// content.className = "main"
-					if (!elem.text) {
-						// write checkbox options to dom
-						contentLeft.insertAdjacentHTML('beforeend', `
-							<div class = "flex-box">
-							
-								<input type="checkbox"
-									class = "ckb"
-									value =  ${elem.selected} 
-									${elem.selected ? 'checked' : ''}
-									id = ${elem.id} 
-									onchange = "change(this)"> 
-
-								</input>
-							
-								<div style = "font-family:'courier'; margin-left: 10px;"
-									<strong><span style = "color: red; font-weight:800">${elem.param}</span></strong> <i>${elem.desc}</i>
-								</div>
-								</div>
-							`
-						)
-					} 
-					if ( index === options.length-1 ) {
-						content.insertAdjacentHTML('beforeend', `<br/>`)
-					}
-
-				})
-
-				//text options
-				options.map(function (elem, index) {
-					// content.className = "main"
-					if (elem.text) {
-
-						contentRight.insertAdjacentHTML('beforeend', `
-						 <div class = "flex-box" style = "font-family: Courier"	>
-							<div style = "flex:2">
-								${elem.id} 
-							</div>
-							<div style = "flex:3">
-								<strong style = "color:red"	> ${elem.param} x</strong>	
-							</div>
-							<div style = "flex: 6 ">
-							<input type = "text" id = "${elem.id}" value = "${elem.text}" style = "width:100%" onkeyup = "changeText(this)">
-							 </div>
-						`)
-					}
-
-				})
-				clipboardCopy = function(id) {
-					//Before we copy, we are going to select the text.
-					var text = document.getElementById(id);
-					var selection = window.getSelection();
-					var range = document.createRange();
-					range.selectNodeContents(text);
-					selection.removeAllRanges();
-					selection.addRange(range);
-					//add to clipboard.
-					document.execCommand('copy');
-					alert("script line has been copied to clipboard")
-				}
-
-				createScript = function () {
-					var output = document.getElementById('output')
-					var boolOpts = '', textOpts = ''
-					options.map(function (elem) {
-						boolOpts += !elem.text ? elem.param + ' ' + (elem.selected ? 'yes':'no') + " ": ''
-						textOpts +=  elem.text && elem.text.length > 1  ?  elem.param + ' ' + elem.text + ' ': ''
-					})
-					output.innerHTML =
-						`<div style = "font-size:1.2em">
-Log in to your server as root, either directly or via SSH:
-<strong style = "color:navy"><i>ssh root@your.server</i></strong> and download the installation script:
-<br/>
-<br/>
-<div align = "center" onclick = "clipboardCopy('releaseLink')" >
-<strong style = "color:navy" ><i id = "releaseLink"> wget https://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install.sh</i></strong>
-</div>
-<br/>
-<br/>
-Run the following command, autogenerated with the options you have chosen above (click on it for clipboard copying):
-</div>
-<div onclick = "clipboardCopy('scriptline')" class = "bash-line"> 
-<a id = "scriptline">sudo bash hst-install.sh ${boolOpts} ${textOpts}</a>
-</div>
-`;
-				}
-				createScript()
-			}
-
-		</script>
-	</head>
-
-	<body onload="onLoad()">
-		<div class = "title">Prepare your HestiaCP installation script, containing the following features:</div>
-		<div class="main">
-			<div id = "content-left" style = "width:50%" ></div>
-			<div id = "content-right" style = "width:50%" ></div>
-				
-		</div>
-		<div id = "content" ></div>
-
-		<!-- <hr /> -->
-		<!-- <input type = "submit" value = "CREATE SCRIPT" onclick="createScript()"> </input>
-		<hr /> -->
-		<div id="output" class = "output"></div>
-	</body>
+                {data && data.map((e, i) => (
+                  <Fragment key={i}>
+                    <ListItem
+                      button classes={{ root: classes.listItem }}
+                      onClick={toggleHandler(i)}
+                      style={e.selected ? { background: "aliceblue" } : { background: "none" }}
+                    >
+                      <ListItemText
+                        primary={
+                          <FormControlLabel
+                            label={<small>{e.param}</small>}
+                            control={<Checkbox size="small" checked={e.selected} color="primary" />}
+                          />
+                        }
+                        secondary={<Fragment>{e.desc}</Fragment>}
+                      />
+                      {e.text && (
+                        <ListItemSecondaryAction>
+                            <TextField 
+                              size = "small" fullWidth variant = "outlined" label = {e.param.replace("--", "")}
+                              value = {e.text} onChange = {inputHandler(i)} 
+                            />
+                      </ListItemSecondaryAction>
+                      )}
 
 
+                        </ListItem>
+                    <Divider />
+                  </Fragment>
+                ))}
+
+              </Grid>
+
+            </Grid>
+          </Container>
+          <Dialog fullWidth={true} maxWidth="lg" open={Boolean(dialog)} onClose={() => setDialog()}>
+            <DialogTitle>
+              INSTRUCTIONS - how to easily install HestiaCP
+                </DialogTitle>
+            <DialogContent>
+              <Typography variant="body1" color="primary">
+                Log in to your server as root, either directly or via SSH: <strong>ssh root@your.server</strong> and download the installation script:
+                    </Typography>
+              <br />
+              <TextField fullWidth multiline
+                label="click inside to copy text"
+                size="small"
+                variant="outlined"
+                inputRef={copyRef1}
+                value={`wget ${HST_RELEASE_LINK}`}
+                onClick={clipboardHandler1}
+              />
+              <br/><br/>
+              <Typography variant="body1" color="primary">
+                then run the following command,
+                autogenerated based on the options you have chosen above:
+                <br/><br/>
+              </Typography>
+
+              <TextField fullWidth multiline
+                label="click inside to copy text"
+                size="small"
+                variant="outlined"
+                inputRef={copyRef2}
+                value={dialog && createScript(data)}
+                onClick={clipboardHandler2}
+              />
+
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setDialog()}>CLOSE</Button>
+            </DialogActions>
+          </Dialog>
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            open={Boolean(confirmCopy)}
+            autoHideDuration={1500}
+            onClose={() => setConfirmCopy()}
+            message="THE TEXT HAS BEEN COPIED TO CLIPBOARD!"
+          />
+        </div>
+      )
+    }
+
+    ReactDOM.render(
+      <App />,
+      document.getElementById('root'),
+    );
+  </script>
+</body>
 
 </html>
