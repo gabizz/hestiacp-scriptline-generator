@@ -68,8 +68,6 @@
         setData(nd)
       }
       const inputHandler = index => ev => {
-        
-        console.log("ev:", ev.target.value, index)
         let nd = [...data]
         nd[index]['text'] = ev.target.value
         nd[index]['selected'] = ev.target.value.length > 0 ? true:false
