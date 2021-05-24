@@ -22,7 +22,7 @@ const options = [
     { name: " (--hostname)", id: "hostname", param: "--hostname", desc: "Set hostname [text]", selected: false, text: '', textField:true },
     { name: " (--email)", id: "email", param: "--email", desc: "Set admin email [text]", selected: false, text: '', textField:true },
     { name: " (--password)", id: "password", param: "--password", desc: "Set admin password [text]", selected: false, text: '', textField:true },
-    { name: " (--lang)", id: "language", param: "--lang", desc: "Default language default: en ( ISO 639-1 codes)", selected: false, text: 'en', textField:true},
+    { name: " (--lang)", id: "language", param: "--lang", desc: "Default language default: en ( ISO 639-1 codes)", selected: true, text: 'en', textField:true},
     { name: "--with-debs", id: "debs", param: "--with-debs", desc: "Path to Hestia debs", selected: false, text: '', textField:true },
 ]
 

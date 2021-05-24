@@ -31,7 +31,7 @@
 
       const { useState, useEffect, Fragment, useRef } = React
       const { Container, Toolbar, Grid, makeStyles, ListItem, ListItemText, ListItemSecondaryAction,
-        Typography, Divider, TextField, MenuItem,
+        Typography, Divider, TextField, MenuItem,InputAdornment,
         Dialog, DialogTitle, DialogActions, DialogContent, Snackbar,
         Button, Checkbox, FormControlLabel } = window['MaterialUI'];
       const useStyles = makeStyles(theme => ({
@@ -61,12 +61,15 @@
 
       const toggleHandler = i => () => {
         let nd = [...data]
-        nd[i]['selected'] = !nd[i]['selected']
+        if ( i !== 23)  nd[i]['selected'] = !nd[i]['selected'] //tweak to ignore toggle listItem event for select lang
         setData(nd)
       }
       const inputHandler = index => ev => {
+        
+        console.log("ev:", ev.target.value, index)
         let nd = [...data]
         nd[index]['text'] = ev.target.value
+        nd[index]['selected'] = ev.target.value.length > 0 ? true:false
         ev.target.value.length > 0 ? nd[index]['selected'] = true : nd[index]['selected'] = false;
         setData(nd)
       }
