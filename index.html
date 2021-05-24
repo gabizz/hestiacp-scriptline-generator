@@ -14,6 +14,7 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/@material-ui/core@4.11.0/umd/material-ui.production.min.js"></script>
   <script src="./options.js"></script>
+  <script src="./langs.js"></script>
 
   <script type="text/babel">
     const HST_RELEASE_LINK = "https://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install.sh"
@@ -30,7 +31,7 @@
 
       const { useState, useEffect, Fragment, useRef } = React
       const { Container, Toolbar, Grid, makeStyles, ListItem, ListItemText, ListItemSecondaryAction,
-        Typography, Divider, TextField,
+        Typography, Divider, TextField, MenuItem,
         Dialog, DialogTitle, DialogActions, DialogContent, Snackbar,
         Button, Checkbox, FormControlLabel } = window['MaterialUI'];
       const useStyles = makeStyles(theme => ({
@@ -67,7 +68,6 @@
         let nd = [...data]
         nd[index]['text'] = ev.target.value
         ev.target.value.length > 0 ? nd[index]['selected'] = true : nd[index]['selected'] = false;
-        if (ev.target.value.length === 0)  nd[index]['text'] =" "
         setData(nd)
       }
       const clipboardHandler1 = ev => {
@@ -121,13 +121,29 @@
                         }
                         secondary={<Fragment>{e.desc}</Fragment>}
                       />
-                      {e.text && (
-                        <ListItemSecondaryAction>
-                            <TextField 
-                              size = "small" fullWidth variant = "outlined" label = {e.param.replace("--", "")}
-                              value = {e.text} onChange = {inputHandler(i)} 
+                      {e.textField && e.id !== "language" && (
+                        <div>
+                            <TextField  
+                              size = "small"  variant = "outlined" label = {e.param.replace("--", "")}
+                              value = {e.text || ""} onChange = {inputHandler(i)} 
                             />
-                      </ListItemSecondaryAction>
+                      </div>
+                      )}
+
+                      {e.textField && e.id === "language" && (
+                        <div>
+                          <TextField 
+                            size = "small"  variant = "outlined" label = "language" select 
+                            value = {e.text}
+                            onChange = {inputHandler(i)} 
+                          >
+                            {langs.map( (el,ix)=> (
+                              <MenuItem key={ix} value = {el.code}>
+                               <small> {`${el.name} (${el.code})`}</small>
+                              </MenuItem>
+                            ))}
+                          </TextField>
+                        </div>
                       )}
 
 

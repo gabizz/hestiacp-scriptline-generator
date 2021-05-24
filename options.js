@@ -18,11 +18,11 @@ const options = [
     { name: " (--api)", id: "api", param: "--api", desc: "Activate API [yes|no] default: yes", selected: true },
     { name: " (--force)", id: "force", param: "--force", desc: "Force installation [yes|no] default: no", selected: false },
     { name: " (--interactive)", id: "interactive", param: "--interactive", desc: "Interactive install [yes|no] default: yes", selected: true },
-    { name: " (--port)", id: "port", param: "--port", desc: "Change Backend Port default: 8083", selected: true, text: '8083' },
-    { name: " (--hostname)", id: "hostname", param: "--hostname", desc: "Set hostname [text]", selected: false, text: ' ' },
-    { name: " (--email)", id: "email", param: "--email", desc: "Set admin email [text]", selected: false, text: ' ' },
-    { name: " (--password)", id: "password", param: "--password", desc: "Set admin password [text]", selected: false, text: ' ' },
-    { name: " (--lang)", id: "language", param: "--lang", desc: "Default language default: en", selected: false, text: 'en' },
-    { name: "--with-debs", id: "debs", param: "--with-debs", desc: "Path to Hestia debs", selected: false, text: ' ' },
+    { name: " (--port)", id: "port", param: "--port", desc: "Change Backend Port default: 8083", selected: true, text: '8083', textField:true },
+    { name: " (--hostname)", id: "hostname", param: "--hostname", desc: "Set hostname [text]", selected: false, text: '', textField:true },
+    { name: " (--email)", id: "email", param: "--email", desc: "Set admin email [text]", selected: false, text: '', textField:true },
+    { name: " (--password)", id: "password", param: "--password", desc: "Set admin password [text]", selected: false, text: '', textField:true },
+    { name: " (--lang)", id: "language", param: "--lang", desc: "Default language default: en ( ISO 639-1 codes)", selected: false, text: 'en', textField:true},
+    { name: "--with-debs", id: "debs", param: "--with-debs", desc: "Path to Hestia debs", selected: false, text: '', textField:true },
 ]
 
