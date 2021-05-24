@@ -33,19 +33,19 @@
     const App = props => {
 
       const { useState, useEffect, Fragment, useRef } = React
-      const { Container, Toolbar, Grid, makeStyles, ListItem, ListItemText, ListItemSecondaryAction,
+      const { CssBaseline, Container, Toolbar, Grid, makeStyles, ListItem, ListItemText, ListItemSecondaryAction,
         Typography, Divider, TextField, MenuItem,InputAdornment,
         Dialog, DialogTitle, DialogActions, DialogContent, Snackbar,
         Button, Checkbox, FormControlLabel } = window['MaterialUI'];
       const useStyles = makeStyles(theme => ({
-        root: { flexGrow: 1 },
+        root: { flexGrow: 1},
         toolbar: {
           background: theme.palette.primary.dark,
           color: theme.palette.primary.contrastText
         },
         container: {
           background: "white",
-          height: "88vh", overflow: "auto",
+          height: "85vh", overflow: "auto",
         },
         listItem: {
           paddingTop: 0, paddingBottom: 0
@@ -88,7 +88,10 @@
       }
 
       return (
+        <Fragment>
+          <CssBaseline/>
         <div className={classes.root}>
+          
           <Toolbar variant="dense" className={classes.toolbar}><br />
             <Grid container justify="space-between" alignItems="center">
               <Typography variant="h5" color="inherit" >HESTIA INSTALLER</Typography>
@@ -119,7 +122,7 @@
                       <ListItemText
                         primary={
                           <FormControlLabel
-                            label={<small>{e.param}</small>}
+                            label={<small><strong>{e.param}</strong></small>}
                             control={<Checkbox size="small" checked={e.selected} color="primary" />}
                           />
                         }
@@ -173,6 +176,7 @@
                 label="click inside to copy text"
                 size="small"
                 variant="outlined"
+                style = {{background: "aliceblue"}}
                 inputRef={copyRef1}
                 value={`wget ${HST_RELEASE_LINK}`}
                 onClick={clipboardHandler1}
@@ -188,6 +192,7 @@
                 label="click inside to copy text"
                 size="small"
                 variant="outlined"
+                style = {{background: "aliceblue"}}
                 inputRef={copyRef2}
                 value={dialog && createScript(data)}
                 onClick={clipboardHandler2}
@@ -209,6 +214,7 @@
             message="THE TEXT HAS BEEN COPIED TO CLIPBOARD!"
           />
         </div>
+        </Fragment>
       )
     }
 
