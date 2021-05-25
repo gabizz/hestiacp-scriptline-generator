@@ -22,12 +22,16 @@
   <script type="text/babel">
     const HST_RELEASE_LINK = "https://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install.sh"
     const createScript = opts => {
-      var boolOpts = '', textOpts = ''
+      var boolOpts = '', textOpts = '', forceOpts = '' 
       opts.map(function (elem) {
-        boolOpts += !elem.text ? elem.param + ' ' + (elem.selected ? 'yes' : 'no') + " " : ''
-        textOpts += elem.text && elem.text.length > 1 ? elem.param + ' ' + elem.text + ' ' : ''
+        if(elem.param == '--force'){
+            forceOpts += (elem.selected ? '-f' : '')
+        }else{
+            boolOpts += !elem.text ? elem.param + ' ' + (elem.selected ? 'yes' : 'no') + " " : ''
+            textOpts += elem.text && elem.text.length > 1 ? elem.param + ' ' + elem.text + ' ' : ''
+        }
       })
-      return `sudo bash hst-install.sh ${boolOpts} ${textOpts}`
+      return `sudo bash hst-install.sh ${boolOpts} ${textOpts} ${forceOpts} `
     }
 
     const App = props => {
