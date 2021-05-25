@@ -1,6 +1,5 @@
 const options = [
     { name: " (--apache)", id: "apache", param: "--apache", desc: " Install Apache [yes|no] default: yes", selected: true },
-    { name: " (--nginx)", id: "nginx", param: "--nginx", desc: "Install Nginx [yes|no] default: yes", selected: true },
     { name: " (--phpfpm)", id: "phpfpm", param: "--phpfpm", desc: "Install PHP-FPM [yes|no] default: yes", selected: true },
     { name: " (--multiphp)", id: "multiphp", param: "--multiphp", desc: " Install Multi-PHP [yes|no] default: no", selected: false },
     { name: " (--vsftpd)", id: "vsftpd", param: "--vsftpd", desc: "Install Vsftpd [yes|no] default: yes", selected: true },
