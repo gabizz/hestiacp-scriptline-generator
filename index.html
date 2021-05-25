@@ -25,7 +25,7 @@
       var boolOpts = '', textOpts = '', forceOpts = '' 
       opts.map(function (elem) {
         if(elem.param == '--force'){
-            forceOpts += (elem.selected ? '-f' : '')
+            forceOpts += (elem.selected ? '--force' : '')
         }else{
             boolOpts += !elem.text ? elem.param + ' ' + (elem.selected ? 'yes' : 'no') + " " : ''
             textOpts += elem.text && elem.text.length > 1 ? elem.param + ' ' + elem.text + ' ' : ''
