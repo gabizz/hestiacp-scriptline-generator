@@ -9,6 +9,7 @@ const options = [
     { name: " (--postgresql)", id: "--postgresql", param: "--postgresql", desc: "Install PostgreSQL [yes|no] default: no", selected: false },
     { name: " (--exim)", id: "--exim", param: "--exim", desc: "Install Exim [yes|no] default: yes", selected: true },
     { name: " (--dovecot)", id: "dovecot", param: "--dovecot", desc: "Install Dovecot [yes|no] default: yes", selected: true },
+    { name: " (--sieve)", id: "sieve", param: "--sieve", desc: "Enable Dovecot sieve [yes|no] default: no", selected: false },
     { name: " (--clamav)", id: "clamav", param: "--clamav", desc: "Install ClamAV [yes|no] default: yes", selected: true },
     { name: " (--spamassassin)", id: "spamassassin", param: "--spamassassin", desc: "Install SpamAssassin [yes|no] default: yes", selected: true },
     { name: " (--iptables)", id: "iptables", param: "--iptables", desc: "Install Iptables [yes|no] default: yes", selected: true },
@@ -22,6 +23,6 @@ const options = [
     { name: " (--email)", id: "email", param: "--email", desc: "Set admin email [text]", selected: false, text: '', textField: true },
     { name: " (--password)", id: "password", param: "--password", desc: "Set admin password [text]", selected: false, text: '', textField: true },
     { name: " (--lang)", id: "language", param: "--lang", desc: "Default language default: en ( ISO 639-1 codes)", selected: true, text: 'en', textField: true },
-    { name: "--with-debs", id: "debs", param: "--with-debs", desc: "Path to Hestia debs", selected: false, text: '', textField: true },
+    { name: "--with-debs", id: "debs", param: "--with-debs", desc: "Path to Hestia packages (Development only)", selected: false, text: '', textField: true },
 ]
 
