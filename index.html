@@ -24,11 +24,12 @@
     const createScript = opts => {
       var boolOpts = '', textOpts = '', forceOpts = '' 
       opts.map(function (elem) {
+        console.log(elem.param);
         if(elem.param == '--force'){
             forceOpts += (elem.selected ? '--force' : '')
         }else{
             boolOpts += !elem.text ? elem.param + ' ' + (elem.selected ? 'yes' : 'no') + " " : ''
-            textOpts += elem.text && elem.text.length > 1 ? elem.param + ' ' + elem.text + ' ' : ''
+            textOpts += elem.text && elem.text.length > 1  ? elem.param + ' \'' + elem.text + '\' ' : ''
         }
       })
       return `sudo bash hst-install.sh ${boolOpts} ${textOpts} ${forceOpts} `
