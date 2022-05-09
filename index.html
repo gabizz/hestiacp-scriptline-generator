@@ -24,7 +24,6 @@
     const createScript = opts => {
       var boolOpts = '', textOpts = '', forceOpts = '' 
       opts.map(function (elem) {
-        console.log(elem.param);
         if(elem.param == '--force'){
             forceOpts += (elem.selected ? '--force' : '')
         }else{
