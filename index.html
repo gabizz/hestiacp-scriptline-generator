@@ -21,6 +21,7 @@
 
   <script type="text/babel">
     const HST_RELEASE_LINK = "https://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install.sh"
+    const CLOUDFLARE_LINK = "https://developers.cloudflare.com/ssl/static/origin_ca_rsa_root.pem"
     const createScript = opts => {
       var boolOpts = '', textOpts = '', forceOpts = '' 
       opts.map(function (elem) {
@@ -214,7 +215,7 @@ To do this, you can add the Cloudflare certificate authority to your server like
                 variant="outlined"
                 style = {{background: "aliceblue"}}
                 inputRef={copyRef1}
-                value={`wget https://developers.cloudflare.com/ssl/static/origin_ca_rsa_root.pem`}
+                value={`wget ${CLOUDFLARE_LINK}`}
                 onClick={clipboardHandler1}
               />
               <br/><br/>
@@ -276,4 +277,4 @@ To do this, you can add the Cloudflare certificate authority to your server like
   </script>
 </body>
 
-</html>
+
