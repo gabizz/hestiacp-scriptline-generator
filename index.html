@@ -201,6 +201,53 @@
                 value={dialog && createScript(data)}
                 onClick={clipboardHandler2}
               />
+               <Typography variant="body1" color="primary">
+               It’s good to use Cloudflare origin SSL for maximum performance, you also get 15 year certificates and don’t need to worry about updating certificates for while 🙂
+
+To do this, you can add the Cloudflare certificate authority to your server like this:
+                <br/><br/>
+              </Typography>
+              
+              <TextField fullWidth multiline
+                label="click inside to copy text"
+                size="small"
+                variant="outlined"
+                style = {{background: "aliceblue"}}
+                inputRef={copyRef1}
+                value={`wget https://developers.cloudflare.com/ssl/static/origin_ca_rsa_root.pem`}
+                onClick={clipboardHandler1}
+              />
+              <br/><br/>
+                <TextField fullWidth multiline
+                label="click inside to copy text"
+                size="small"
+                variant="outlined"
+                style = {{background: "aliceblue"}}
+                inputRef={copyRef1}
+                value={`mv origin_ca_rsa_root.pem origin_ca_rsa_root.crt`}
+                onClick={clipboardHandler1}
+              />
+              <br/><br/>
+               <TextField fullWidth multiline
+                label="click inside to copy text"
+                size="small"
+                variant="outlined"
+                style = {{background: "aliceblue"}}
+                inputRef={copyRef1}
+                value={`cp origin_ca_rsa_root.crt /usr/local/share/ca-certificates`}
+                onClick={clipboardHandler1}
+              />
+              <br/><br/>
+              <TextField fullWidth multiline
+                label="click inside to copy text"
+                size="small"
+                variant="outlined"
+                style = {{background: "aliceblue"}}
+                inputRef={copyRef1}
+                value={`update-ca-certificates`}
+                onClick={clipboardHandler1}
+              />
+              <br/><br/>
 
             </DialogContent>
             <DialogActions>
