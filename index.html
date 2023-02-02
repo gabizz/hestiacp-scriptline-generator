@@ -91,6 +91,30 @@
         ev.target.focus();
         setConfirmCopy(true)
       }
+      const clipboardHandler3 = ev => {
+        copyRef3.current.select()
+        document.execCommand('copy');
+        ev.target.focus();
+        setConfirmCopy(true)
+      }
+      const clipboardHandler4 = ev => {
+        copyRef4.current.select()
+        document.execCommand('copy');
+        ev.target.focus();
+        setConfirmCopy(true)
+      }
+      const clipboardHandler5 = ev => {
+        copyRef5.current.select()
+        document.execCommand('copy');
+        ev.target.focus();
+        setConfirmCopy(true)
+      }
+      const clipboardHandler6 = ev => {
+        copyRef6.current.select()
+        document.execCommand('copy');
+        ev.target.focus();
+        setConfirmCopy(true)
+      }
 
       return (
         <Fragment>
@@ -214,9 +238,9 @@ To do this, you can add the Cloudflare certificate authority to your server like
                 size="small"
                 variant="outlined"
                 style = {{background: "aliceblue"}}
-                inputRef={copyRef1}
+                inputRef={copyRef3}
                 value={`wget ${CLOUDFLARE_LINK}`}
-                onClick={clipboardHandler1}
+                onClick={clipboardHandler3}
               />
               <br/><br/>
                 <TextField fullWidth multiline
@@ -224,9 +248,9 @@ To do this, you can add the Cloudflare certificate authority to your server like
                 size="small"
                 variant="outlined"
                 style = {{background: "aliceblue"}}
-                inputRef={copyRef1}
+                inputRef={copyRef4}
                 value={`mv origin_ca_rsa_root.pem origin_ca_rsa_root.crt`}
-                onClick={clipboardHandler1}
+                onClick={clipboardHandler4}
               />
               <br/><br/>
                <TextField fullWidth multiline
@@ -234,9 +258,9 @@ To do this, you can add the Cloudflare certificate authority to your server like
                 size="small"
                 variant="outlined"
                 style = {{background: "aliceblue"}}
-                inputRef={copyRef1}
+                inputRef={copyRef5}
                 value={`cp origin_ca_rsa_root.crt /usr/local/share/ca-certificates`}
-                onClick={clipboardHandler1}
+                onClick={clipboardHandler5}
               />
               <br/><br/>
               <TextField fullWidth multiline
@@ -244,9 +268,9 @@ To do this, you can add the Cloudflare certificate authority to your server like
                 size="small"
                 variant="outlined"
                 style = {{background: "aliceblue"}}
-                inputRef={copyRef1}
+                inputRef={copyRef6}
                 value={`update-ca-certificates`}
-                onClick={clipboardHandler1}
+                onClick={clipboardHandler6}
               />
               <br/><br/>
 
@@ -276,5 +300,4 @@ To do this, you can add the Cloudflare certificate authority to your server like
     );
   </script>
 </body>
-
 
